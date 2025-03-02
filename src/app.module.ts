@@ -9,12 +9,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { config } from './config/config';
 import { RefreshToken } from './user/entities/refresh-token.entity';
+import { ResetToken } from './user/entities/reset-token.entity';
 import { AppController } from './app.controller';
 
 dotenv.config();
 
 @Module({
-  imports: [ // Chargement des variables d'environnement
+  imports: [ 
     ConfigModule.forRoot({
       isGlobal: true, // Permet d'accéder aux variables dans toute l'application
     }),
@@ -34,22 +35,22 @@ dotenv.config();
     AuthModule, 
 
     TypeOrmModule.forRoot({ 
-      type: 'mysql', // Spécifie que la base de données utilisée est MySQL. TypeORM supporte plusieurs bases de données comme PostgreSQL, SQLite, etc.
+      type: 'mysql', 
     
-     host: process.env.DB_HOST, // Récupère l'adresse de l'hôte de la base de données depuis les variables d'environnement (fichier .env).
+     host: process.env.DB_HOST, 
     
-     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306, // Vérification ajoutée ici
+     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306, 
     
-    username: process.env.DB_USERNAME, // Récupère le nom d'utilisateur pour la connexion à la base de données depuis les variables d'environnement.
+    username: process.env.DB_USERNAME, 
     
-    password: process.env.DB_PASSWORD, // Récupère le mot de passe pour la connexion à la base de données depuis les variables d'environnement.
+    password: process.env.DB_PASSWORD, 
     
-    database: process.env.DB_NAME, // Spécifie le nom de la base de données à utiliser. Cette valeur doit être définie dans le fichier .env.
+    database: process.env.DB_NAME, 
     
-    entities: [User,RefreshToken], // Liste des entités que TypeORM doit utiliser pour créer les tables dans la base de données. Ici, Payment et User sont des entités.
+    entities: [User,RefreshToken, ResetToken], 
     
-    synchronize: false, // Si à `true`, TypeORM va automatiquement synchroniser les entités avec la base de données à chaque démarrage de l'application. C'est utile pour le développement, mais risqué en production (peut effacer des données).
-    logging: true, // Active les logs pour voir les requêtes SQL
+    synchronize: true,
+    logging: true, 
     
 
 })

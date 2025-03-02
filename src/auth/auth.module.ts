@@ -6,9 +6,11 @@ import { User } from 'src/user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RefreshToken } from 'src/user/entities/refresh-token.entity';
+import { ResetToken } from 'src/user/entities/reset-token.entity';
+import { MailService } from 'src/services/mail.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User,RefreshToken]),
+  imports: [TypeOrmModule.forFeature([User,RefreshToken,ResetToken]),
 
   JwtModule.registerAsync({
     imports: [ConfigModule],
@@ -21,6 +23,6 @@ import { RefreshToken } from 'src/user/entities/refresh-token.entity';
 ], // Import User repository
 
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService,MailService],
 })
 export class AuthModule {}
